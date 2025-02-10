@@ -17,7 +17,7 @@ public class Sala {
     private Long id;
     private String tipo;
     private String estado;
-    private int capacidade;
+    private Integer capacidade;
     private String recursos;
 
 }
