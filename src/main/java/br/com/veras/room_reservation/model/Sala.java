@@ -15,9 +15,13 @@ public class Sala {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String tipo;
+    @Column(nullable = false)
     private String estado;
+    @Column(nullable = false)
     private Integer capacidade;
+    @Column(nullable = false)
     private String recursos;
 
 }
