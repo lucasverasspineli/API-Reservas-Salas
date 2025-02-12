@@ -1,5 +1,6 @@
 package br.com.veras.room_reservation.service;
 
+import br.com.veras.room_reservation.exception.NotFoundUserException;
 import br.com.veras.room_reservation.model.User;
 import br.com.veras.room_reservation.model.UserId;
 import br.com.veras.room_reservation.repository.UserRepository;
@@ -17,7 +18,7 @@ public class UserService {
     public User findById(String login, String senha){
       Optional<User> opUser= userRepository.findById(new UserId(login,senha));
       if(!opUser.isPresent()){
-          throw new RuntimeException("Não existe este usuário");
+          throw new NotFoundUserException();
       }
       return opUser.get();
     }
