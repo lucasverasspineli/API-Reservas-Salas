@@ -26,6 +26,7 @@ public class User {
     private String perfil;
     private String instituicao;
 
+    public User(){}
 
     public User(String login, String senha, String cpf, String instituicao, String nome, String perfil, String sexo) {
         this.userId = new UserId(login, senha);
@@ -35,4 +36,6 @@ public class User {
         this.perfil = perfil;
         this.sexo = sexo;
     }
+
+
 }
