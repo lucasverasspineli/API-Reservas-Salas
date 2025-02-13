@@ -1,10 +1,13 @@
 package br.com.veras.room_reservation.service;
 
+import br.com.veras.room_reservation.exception.NotFoundSalaException;
 import br.com.veras.room_reservation.model.Sala;
 import br.com.veras.room_reservation.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class SalaService {
@@ -19,5 +22,13 @@ public class SalaService {
         return salaRepository.save(sa);
     }
 
+    @Transactional(readOnly = true)
+    public Sala buscarSala(Long id){
+        Optional<Sala> sala = salaRepository.findById(id);
+        if(!sala.isPresent()){
+            throw new NotFoundSalaException();
+        }
+        return sala.get();
+    }
 
 }

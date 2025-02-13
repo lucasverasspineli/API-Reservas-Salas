@@ -16,9 +16,16 @@ public class SalaController {
 
     @ResponseBody
     @PostMapping()
-    public ResponseEntity<Sala> saveRoom (@RequestBody Sala sala){
+    public ResponseEntity<Sala> save (@RequestBody Sala sala){
         Sala novaSala = salaService.criarSala(sala);
         return ResponseEntity.status(HttpStatus.CREATED).body(novaSala);
     }
+
+    @GetMapping("{id-sala}")
+    public ResponseEntity<Sala> search(@PathVariable(name = "id-sala") Long id){
+        Sala sala = salaService.buscarSala(id);
+        return ResponseEntity.status(HttpStatus.FOUND).body(sala);
+    }
+
 
 }
