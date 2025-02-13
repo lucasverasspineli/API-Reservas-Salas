@@ -27,5 +27,13 @@ public class SalaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(sala);
     }
 
+    @PutMapping("editar/{id}")
+    public ResponseEntity<Sala> update(@PathVariable Long id, @RequestBody Sala sala){
+       Sala novaSala = salaService.editar(id, sala);
+       return ResponseEntity.status(HttpStatus.OK).body(novaSala);
+    }
+
+
+
 
 }

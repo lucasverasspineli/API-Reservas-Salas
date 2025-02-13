@@ -31,4 +31,16 @@ public class SalaService {
         return sala.get();
     }
 
+    public Sala editar(Long id, Sala sala) {
+        Sala editSala = buscarSala(id);
+        editSala.setStatus_reservado(true);
+        editSala.setCapacidade(sala.getCapacidade());
+        editSala.setRecursos(sala.getRecursos());
+        editSala.setTipo(sala.getTipo());
+        editSala.setEstado(sala.getEstado());
+        return salaRepository.save(editSala);
+
+    }
+
+
 }
