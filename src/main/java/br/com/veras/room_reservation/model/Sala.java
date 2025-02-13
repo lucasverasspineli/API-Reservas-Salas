@@ -23,5 +23,7 @@ public class Sala {
     private Integer capacidade;
     @Column(nullable = false)
     private String recursos;
+    @Column(nullable = false)
+    private Boolean status_reservado;
 
 }
