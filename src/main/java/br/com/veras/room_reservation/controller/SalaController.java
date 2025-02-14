@@ -5,7 +5,10 @@ import br.com.veras.room_reservation.service.SalaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("sala/")
@@ -13,6 +16,15 @@ public class SalaController {
 
     @Autowired
     private SalaService salaService;
+
+
+    @Transactional(readOnly = true)
+    @GetMapping("/all")
+    ResponseEntity<List<Sala>> listAll(){
+        List<Sala> list = salaService.listagem();
+        return ResponseEntity.status(HttpStatus.OK).body(list);
+    }
+
 
     @ResponseBody
     @PostMapping()
