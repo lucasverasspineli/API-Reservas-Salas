@@ -39,8 +39,14 @@ public class SalaService {
         editSala.setTipo(sala.getTipo());
         editSala.setEstado(sala.getEstado());
         return salaRepository.save(editSala);
-
     }
 
+    public void excluir(Long id){
+        Optional<Sala> opDel = salaRepository.findById(id);
+        if(!opDel.isPresent()){
+            throw new NotFoundSalaException();
+        }
+        salaRepository.delete(opDel.get());
+    }
 
 }

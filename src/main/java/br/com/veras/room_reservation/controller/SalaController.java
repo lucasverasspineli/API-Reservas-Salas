@@ -33,6 +33,14 @@ public class SalaController {
        return ResponseEntity.status(HttpStatus.OK).body(novaSala);
     }
 
+    @DeleteMapping("del/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        salaService.excluir(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Sala excluida com sucesso!");
+    }
+
+
+
 
 
 
