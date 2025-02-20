@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class SalaController {
     private SalaService salaService;
 
 
-    @Transactional(readOnly = true)
+
     @GetMapping("/all")
     ResponseEntity<List<Sala>> listAll(){
         List<Sala> list = salaService.listagem();
@@ -49,6 +50,12 @@ public class SalaController {
     public ResponseEntity<String> delete(@PathVariable Long id){
         salaService.excluir(id);
         return ResponseEntity.status(HttpStatus.OK).body("Sala excluida com sucesso!");
+    }
+
+    @GetMapping("semReservas")
+    public ResponseEntity<List<Sala>> listaSemReserva(){
+        List<Sala> list = salaService.semReservas();
+        return ResponseEntity.status(HttpStatus.FOUND).body(list);
     }
 
 

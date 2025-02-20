@@ -2,6 +2,8 @@ package br.com.veras.room_reservation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.antlr.v4.runtime.misc.NotNull;
+import org.hibernate.annotations.ColumnDefault;
 
 
 @Getter
@@ -24,6 +26,6 @@ public class Sala {
     @Column(nullable = false)
     private String recursos;
     @Column(nullable = false)
-    private Boolean status_reservado;
+    private boolean statusReservado;
 
 }

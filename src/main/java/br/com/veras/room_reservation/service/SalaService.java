@@ -1,6 +1,7 @@
 package br.com.veras.room_reservation.service;
 
 import br.com.veras.room_reservation.exception.NotFoundSalaException;
+import br.com.veras.room_reservation.exception.NotFoundUserException;
 import br.com.veras.room_reservation.model.Sala;
 import br.com.veras.room_reservation.repository.SalaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,17 +17,14 @@ public class SalaService {
     @Autowired
     private SalaRepository salaRepository;
 
-
-
+    @Transactional(readOnly = true)
     public List<Sala> listagem(){
         List<Sala> list = salaRepository.findAll();
         return list;
     }
 
-
     public Sala criarSala(Sala sala){
         Sala sa = sala;
-        sa.setStatus_reservado(false);
         return salaRepository.save(sa);
     }
 
@@ -41,7 +39,7 @@ public class SalaService {
 
     public Sala editar(Long id, Sala sala) {
         Sala editSala = buscarSala(id);
-        editSala.setStatus_reservado(true);
+        editSala.setStatusReservado((sala.isStatusReservado())? true : false);
         editSala.setCapacidade(sala.getCapacidade());
         editSala.setRecursos(sala.getRecursos());
         editSala.setTipo(sala.getTipo());
@@ -55,6 +53,11 @@ public class SalaService {
             throw new NotFoundSalaException();
         }
         salaRepository.delete(opDel.get());
+    }
+    @Transactional(readOnly = true)
+    public List<Sala> semReservas(){
+        List<Sala> list = salaRepository.findByStatusReservadoFalse();
+        return list;
     }
 
 }
