@@ -80,7 +80,11 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 			<scope>provided</scope>
 		</dependency>
-
+<!-- Adicionado o Jakarta Validation-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

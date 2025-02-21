@@ -22,5 +22,4 @@ public class UserExceptionHandling {
         return ResponseEntity.status(HttpStatus.FOUND).body(erro);
     }
 
-
 }
