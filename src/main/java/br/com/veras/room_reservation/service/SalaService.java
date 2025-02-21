@@ -25,6 +25,7 @@ public class SalaService {
 
     public Sala criarSala(Sala sala){
         Sala sa = sala;
+        sa.setStatusReservado(false); //Toda sala criada fica disponível para reservar!
         return salaRepository.save(sa);
     }
 

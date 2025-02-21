@@ -14,10 +14,17 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @GetMapping("{login}/{senha}")
     public ResponseEntity<User> findByUser(@PathVariable String login, @PathVariable String senha){
         User user = userService.findById(login,senha);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("create")
+    public ResponseEntity<User> create(@RequestBody User user){
+        User use = userService.criarUsuario(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(use);
     }
 
 }
