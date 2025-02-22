@@ -37,6 +37,24 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User editar(User user){
+        User buscar  = userRepository.findById(user.getUserId())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado!"));
+        buscar.setNome(user.getNome());
+        buscar.setSexo(user.getSexo());
+        buscar.setCpf(user.getCpf());
+        buscar.setPerfil(user.getPerfil());
+        buscar.setInstituicao(user.getInstituicao());
+        return userRepository.save(buscar);
+    }
+
+    public void excluir(String login, String senha){
+        Optional<User> userDel = userRepository.findById(new UserId(login,senha));
+        if(!userDel.isPresent()){
+            throw new NotFoundUserException("Esse Usuário não existe");
+        }
+        userRepository.delete(userDel.get());
+    }
 
 
 }

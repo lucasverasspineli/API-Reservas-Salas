@@ -32,4 +32,17 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(use);
     }
 
+    @PutMapping("update-user")
+    public ResponseEntity<User> update(@RequestBody User user){
+       User usr = userService.editar(user);
+       return ResponseEntity.status(HttpStatus.OK).body(usr);
+    }
+
+    @DeleteMapping("del/{login}/{senha}")
+    public ResponseEntity<String> delete(@PathVariable String login, @PathVariable String senha){
+        userService.excluir(login,senha);
+        return ResponseEntity.status(HttpStatus.OK).body("Usuário cancelado com sucesso!");
+    }
+
+
 }
