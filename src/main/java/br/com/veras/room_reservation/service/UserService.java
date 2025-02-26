@@ -10,6 +10,7 @@ import org.springframework.data.util.Optionals;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
@@ -20,8 +21,8 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
-
-    public User findById(String login, String senha){
+    @Transactional(readOnly = true)
+    public User buscar(String login, String senha){
       Optional<User> opUser= userRepository.findById(new UserId(login,senha));
       if(!opUser.isPresent()){
           throw new NotFoundUserException();
@@ -29,7 +30,7 @@ public class UserService {
       return opUser.get();
     }
 
-    public User criarUsuario(User user){
+    public User criar(User user){
         Optional<User> opUser = userRepository.findById(user.getUserId());
         if(opUser.isPresent()){
             throw new UserCredentialExistsException();

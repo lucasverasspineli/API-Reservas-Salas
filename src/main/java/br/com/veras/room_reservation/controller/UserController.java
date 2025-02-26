@@ -19,7 +19,7 @@ public class UserController {
 
     @GetMapping("{login}/{senha}")
     public ResponseEntity<User> findByUser(@PathVariable String login, @PathVariable String senha){
-        User user = userService.findById(login,senha);
+        User user = userService.buscar(login,senha);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
@@ -28,7 +28,7 @@ public class UserController {
         if(user.getUserId().getLogin() == null || user.getUserId().getSenha() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Você tem que informar o Login e Senha");
         }
-        User use = userService.criarUsuario(user);
+        User use = userService.criar(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(use);
     }
 
@@ -43,6 +43,8 @@ public class UserController {
         userService.excluir(login,senha);
         return ResponseEntity.status(HttpStatus.OK).body("Usuário cancelado com sucesso!");
     }
+
+
 
 
 }
