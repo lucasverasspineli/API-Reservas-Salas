@@ -4,6 +4,8 @@ import br.com.veras.room_reservation.model.Sala;
 import jakarta.persistence.Column;
 import org.springframework.beans.BeanUtils;
 
+import java.util.Objects;
+
 public class SalaDTO {
 
     private Long id;
@@ -77,5 +79,17 @@ public class SalaDTO {
 
     public void setTipo(String tipo) {
         this.tipo = tipo;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof SalaDTO salaDTO)) return false;
+        return Objects.equals(id, salaDTO.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

@@ -27,46 +27,44 @@ public class SalaServiceImpl implements SalaService {
 
     public SalaDTO criar(SalaDTO salaDTO) {
         Sala sala = new Sala();
-        sala.setStatusReservado(false);//Toda sala criada fica disponível para reservar!
-        sala.setRecursos(salaDTO.getRecursos());
-        sala.setEstado(salaDTO.getEstado());
-        sala.setCapacidade(salaDTO.getCapacidade());
-        sala.setTipo(salaDTO.getTipo());
-        sala = salaRepository.save(sala);
-        salaDTO.setId(sala.getId());
-        salaDTO.setStatusReservado(sala.isStatusReservado());
-        return salaDTO;
+        salaDTO.setStatusReservado(false);//Toda sala criada fica disponível para reservar!
+        convertSalaDtoForSala(salaDTO, sala);
+        salaRepository.save(sala);
+        return new SalaDTO(sala);
     }
 
     @Transactional(readOnly = true)
     public SalaDTO buscarSala(Long id) {
-        Optional<Sala> sala = salaRepository.findById(id);
-        if (!sala.isPresent()) {
-            throw new NotFoundSalaException();
-        }
-        SalaDTO salaDTO = new SalaDTO(sala.get());
-        return salaDTO;
+        Sala sala = salaRepository.findById(id).orElseThrow(NotFoundSalaException::new);
+        return new SalaDTO(sala);
     }
 
+    @Transactional
     public SalaDTO editar(SalaDTO salaDTO, Long id) {
-        SalaDTO editSala = buscarSala(id);
-        Sala sala = editSala.salaDtoForSala();
-        sala.setStatusReservado(salaDTO.isStatusReservado());
-        sala.setTipo(salaDTO.getTipo());
-        sala.setCapacidade(salaDTO.getCapacidade());
-        sala.setRecursos(salaDTO.getRecursos());
-        sala.setEstado(salaDTO.getEstado());
+        Sala sala = obterSala(id);
+        convertSalaDtoForSala(salaDTO, sala);
         salaRepository.save(sala);
-        editSala = new SalaDTO(sala);
-        return editSala;
+        return new SalaDTO(sala);
+    }
+    // Convertendo e fazendo a validação para dos campos da entidade Sala
+    private void convertSalaDtoForSala(SalaDTO salaDTO, Sala sala) {
+        sala.setCapacidade((salaDTO.getCapacidade() == null) ? sala.getCapacidade() : salaDTO.getCapacidade());
+        sala.setRecursos((salaDTO.getRecursos() == null) ? sala.getRecursos() : salaDTO.getRecursos());
+        sala.setEstado((salaDTO.getEstado() == null) ? sala.getEstado() : salaDTO.getEstado());
+        sala.setTipo((salaDTO.getTipo() == null) ? sala.getTipo() : salaDTO.getTipo());
+        sala.setStatusReservado((salaDTO.isStatusReservado() != sala.isStatusReservado()) ? salaDTO.isStatusReservado() : sala.isStatusReservado());
     }
 
+    @Transactional(readOnly = true)
+    private Sala obterSala(Long id) {
+        Sala sala = salaRepository.findById(id).orElseThrow(NotFoundSalaException::new);
+        return sala;
+    }
+
+    @Transactional
     public void excluir(Long id) {
-        Optional<Sala> opDel = salaRepository.findById(id);
-        if (!opDel.isPresent()) {
-            throw new NotFoundSalaException();
-        }
-        salaRepository.delete(opDel.get());
+        Sala sala = obterSala(id);
+        salaRepository.delete(sala);
     }
 
     @Transactional(readOnly = true)
