@@ -25,6 +25,7 @@ public class SalaServiceImpl implements SalaService {
         return list.stream().map(s -> new SalaDTO(s)).collect(Collectors.toList());
     }
 
+    @Transactional
     public SalaDTO criar(SalaDTO salaDTO) {
         Sala sala = new Sala();
         salaDTO.setStatusReservado(false);//Toda sala criada fica disponível para reservar!

@@ -1,13 +1,11 @@
 package br.com.veras.room_reservation.controller;
 
-import br.com.veras.room_reservation.model.User;
-import br.com.veras.room_reservation.model.UserId;
-import br.com.veras.room_reservation.service.UserService;
+import br.com.veras.room_reservation.dto.UserDTO;
+import br.com.veras.room_reservation.service.impl.UserServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -15,27 +13,27 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @GetMapping("{login}/{senha}")
-    public ResponseEntity<User> findByUser(@PathVariable String login, @PathVariable String senha){
-        User user = userService.buscar(login,senha);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<UserDTO> findByUser(@PathVariable String login, @PathVariable String senha){
+        UserDTO userDTO = userService.buscar(login,senha);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
     }
 
     @PostMapping("create")
-    public ResponseEntity<?> create(@Valid @RequestBody User user){
-        if(user.getUserId().getLogin() == null || user.getUserId().getSenha() == null){
+    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO){
+        if(userDTO.getLogin() == null || userDTO.getSenha() == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Você tem que informar o Login e Senha");
         }
-        User use = userService.criar(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(use);
+        UserDTO user =userService.criar(userDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
-    @PutMapping("update-user")
-    public ResponseEntity<User> update(@RequestBody User user){
-       User usr = userService.editar(user);
-       return ResponseEntity.status(HttpStatus.OK).body(usr);
+    @PutMapping("update/{login}/{senha}")
+    public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO,@PathVariable String login ,@PathVariable String senha){
+       UserDTO user = userService.editar(userDTO);
+       return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
     @DeleteMapping("del/{login}/{senha}")
@@ -43,8 +41,5 @@ public class UserController {
         userService.excluir(login,senha);
         return ResponseEntity.status(HttpStatus.OK).body("Usuário cancelado com sucesso!");
     }
-
-
-
 
 }
