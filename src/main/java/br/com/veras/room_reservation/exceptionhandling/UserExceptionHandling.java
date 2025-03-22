@@ -7,9 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
-public class UserExceptionHandling {
+public class UserExceptionHandling extends ResponseEntityExceptionHandler {
     @ExceptionHandler(NotFoundUserException.class)
     public ResponseEntity<ErrorDetail> notFoundUserException(NotFoundUserException ex){
         ErrorDetail error = new ErrorDetail(HttpStatus.NOT_FOUND, "Esse Usuário não existe!");

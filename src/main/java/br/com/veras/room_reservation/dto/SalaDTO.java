@@ -15,17 +15,6 @@ public class SalaDTO {
     private String recursos;
     private boolean statusReservado;
 
-    public Sala salaDtoForSala() {
-        Sala sala = new Sala();
-        sala.setId(this.getId());
-        sala.setCapacidade(this.getCapacidade());
-        sala.setRecursos(this.getRecursos());
-        sala.setEstado(this.getEstado());
-        sala.setTipo(this.getTipo());
-        sala.setStatusReservado(this.isStatusReservado());
-        return sala;
-    }
-
     public SalaDTO() {
     }
 
