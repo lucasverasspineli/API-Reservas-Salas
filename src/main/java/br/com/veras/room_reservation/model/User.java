@@ -1,12 +1,10 @@
 package br.com.veras.room_reservation.model;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EmbeddedId;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tb_users")
@@ -15,6 +13,10 @@ import lombok.Setter;
 public class User {
 
     @EmbeddedId
+    @AttributeOverrides({
+            @AttributeOverride(name = "login", column = @Column(name = "login", nullable = false)),
+            @AttributeOverride(name = "senha", column = @Column(name = "senha", nullable = false))
+    })
     private UserId userId;
 
     @Column(nullable = false)
@@ -25,6 +27,8 @@ public class User {
     @Column(nullable = false)
     private String perfil;
     private String instituicao;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
+    private List<Reserva> reservas;
 
     public User(){}
 
@@ -36,6 +40,5 @@ public class User {
         this.perfil = perfil;
         this.sexo = sexo;
     }
-
 
 }

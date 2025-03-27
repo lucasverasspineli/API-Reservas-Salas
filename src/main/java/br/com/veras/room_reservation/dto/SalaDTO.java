@@ -1,7 +1,7 @@
 package br.com.veras.room_reservation.dto;
 
+import br.com.veras.room_reservation.model.Reserva;
 import br.com.veras.room_reservation.model.Sala;
-import jakarta.persistence.Column;
 import org.springframework.beans.BeanUtils;
 
 import java.util.Objects;
@@ -14,6 +14,7 @@ public class SalaDTO {
     private Integer capacidade;
     private String recursos;
     private boolean statusReservado;
+    private Reserva reserva;
 
     public SalaDTO() {
     }
@@ -70,6 +71,13 @@ public class SalaDTO {
         this.tipo = tipo;
     }
 
+    public Reserva getReserva() {
+        return reserva;
+    }
+
+    public void setReserva(Reserva reserva) {
+        this.reserva = reserva;
+    }
 
     @Override
     public boolean equals(Object o) {
