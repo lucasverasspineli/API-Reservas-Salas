@@ -2,8 +2,8 @@ package br.com.veras.room_reservation.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.antlr.v4.runtime.misc.NotNull;
-import org.hibernate.annotations.ColumnDefault;
+
+import java.util.List;
 
 
 @Getter
@@ -27,5 +27,7 @@ public class Sala {
     private String recursos;
     @Column(nullable = false)
     private boolean statusReservado;
+    @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Reserva> reservas;
 
 }
