@@ -1,5 +1,6 @@
 package br.com.veras.room_reservation.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Reserva {
     private User user;
     @ManyToOne
     @JoinColumn(name = "sala_id", nullable = false)
+    @JsonBackReference
     private Sala sala;
 
     public Reserva() {

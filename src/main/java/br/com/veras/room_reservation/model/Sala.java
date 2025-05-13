@@ -1,8 +1,10 @@
 package br.com.veras.room_reservation.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,6 +30,7 @@ public class Sala {
     @Column(nullable = false)
     private boolean statusReservado;
     @OneToMany(mappedBy = "sala", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Reserva> reservas;
+    @JsonManagedReference
+    private List<Reserva> reservas = new ArrayList<>();
 
 }

@@ -1,10 +1,10 @@
 package br.com.veras.room_reservation.dto;
 
-import br.com.veras.room_reservation.model.Reserva;
 import br.com.veras.room_reservation.model.Sala;
-import org.springframework.beans.BeanUtils;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class SalaDTO {
 
@@ -14,13 +14,24 @@ public class SalaDTO {
     private Integer capacidade;
     private String recursos;
     private boolean statusReservado;
-    private Reserva reserva;
+    private List<ReservaMinDTO> reservas = new ArrayList<>();
 
     public SalaDTO() {
     }
 
-    public SalaDTO(Sala entity) {
-        BeanUtils.copyProperties(entity, this);
+    public SalaDTO(Sala entity){
+        this.id = entity.getId();
+        this.tipo = entity.getTipo();
+        this.estado = entity.getEstado();
+        this.capacidade = entity.getCapacidade();
+        this.recursos = entity.getRecursos();
+        this.statusReservado = entity.isStatusReservado();
+        if(entity.getReservas() != null){
+            this.reservas = entity.getReservas()
+                    .stream()
+                    .map(ReservaMinDTO::new)
+                    .collect(Collectors.toList());
+        }
     }
 
     public Integer getCapacidade() {
@@ -71,22 +82,12 @@ public class SalaDTO {
         this.tipo = tipo;
     }
 
-    public Reserva getReserva() {
-        return reserva;
+    public List<ReservaMinDTO> getReservas() {
+        return reservas;
     }
 
-    public void setReserva(Reserva reserva) {
-        this.reserva = reserva;
+    public void setReservas(List<ReservaMinDTO> reservas) {
+        this.reservas = reservas;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof SalaDTO salaDTO)) return false;
-        return Objects.equals(id, salaDTO.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
-    }
 }
