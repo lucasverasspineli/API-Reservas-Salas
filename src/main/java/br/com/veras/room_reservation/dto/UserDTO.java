@@ -1,33 +1,43 @@
 package br.com.veras.room_reservation.dto;
 
+import br.com.veras.room_reservation.model.Reserva;
 import br.com.veras.room_reservation.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class UserDTO {
 
     private String login;
-    private String senha;
-
     private String nome;
     private String sexo;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String cpf;
     private String perfil;
     private String instituicao;
-
+    private List<ReservaMinDTO> reservas = new ArrayList<>();
 
     public UserDTO() {
     }
 
     public UserDTO(User entity) {
         this.login = entity.getUserId().getLogin();
-        this.senha = entity.getUserId().getSenha();
+        this.nome = entity.getNome();
+        this.sexo = entity.getSexo();
         this.cpf = entity.getCpf();
         this.instituicao = entity.getInstituicao();
-        this.nome = entity.getNome();
         this.perfil = entity.getPerfil();
-        this.sexo = entity.getSexo();
+        if(entity.getReservas() != null){
+            this.reservas = entity.getReservas()
+                    .stream()
+                    .map(ReservaMinDTO::new)
+                    .collect(Collectors.toList());
+        }
     }
 
     public String getCpf() {
@@ -70,14 +80,6 @@ public class UserDTO {
         this.perfil = perfil;
     }
 
-    public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
-
     public String getSexo() {
         return sexo;
     }
@@ -86,4 +88,11 @@ public class UserDTO {
         this.sexo = sexo;
     }
 
+    public List<ReservaMinDTO> getReservas() {
+        return reservas;
+    }
+
+    public void setReservas(List<ReservaMinDTO> reservas) {
+        this.reservas = reservas;
+    }
 }

@@ -1,6 +1,7 @@
 package br.com.veras.room_reservation.service.impl;
 
 import br.com.veras.room_reservation.dto.ReservaDTO;
+import br.com.veras.room_reservation.dto.ReservaMinDTO;
 import br.com.veras.room_reservation.dto.SalaDTO;
 import br.com.veras.room_reservation.dto.UserDTO;
 import br.com.veras.room_reservation.exception.RoomReservedException;
@@ -26,7 +27,6 @@ public class ReservaServiceImpl {
     private UserServiceImpl userService;
 
     public ReservaDTO criar(String login, String senha, Long id_sala) {
-        /*Procurar pela Sala se ela já está reservada */
         UserDTO userDTO = userService.buscar(login, senha);
         SalaDTO buscarSala = salaService.buscarSala(id_sala);
         if (buscarSala.isStatusReservado()) {
@@ -34,15 +34,19 @@ public class ReservaServiceImpl {
         }
         buscarSala.setStatusReservado(true);
         Reserva reservar = new Reserva();
-        reservar.setUser(userDtoForUser(userDTO));
+        reservar.setUser(userDtoForUser(userDTO, senha));
         reservar.setSala(salaDtoForSala(buscarSala));
         reservar.setDataHora(LocalDateTime.now());
-        Reserva reserva = reservaRepository.save(reservar);
 
-        SalaDTO salaDTO = salaService.editar(buscarSala, id_sala);
+        Reserva reserva = reservaRepository.save(reservar);
+        ReservaMinDTO reservaMinDTO = new ReservaMinDTO(reserva);
+        userDTO.getReservas().add(reservaMinDTO);
+
+        userService.editarListReservasUser(userDTO,senha, buscarSala.getId());
+        buscarSala.getReservas().add(reservaMinDTO);
+        salaService.editListReservaSala(buscarSala, userDTO.getLogin(), senha);
         reservaRepository.save(reserva);
-        ReservaDTO reservaDTO = new ReservaDTO(reserva);
-        return reservaDTO;
+        return new ReservaDTO(reserva);
     }
 
 
@@ -52,9 +56,9 @@ public class ReservaServiceImpl {
         return sala;
     }
 
-    private User userDtoForUser(UserDTO userDTO) {
+    private User userDtoForUser(UserDTO userDTO, String senha) {
         User user = new User();
-        user.setUserId(new UserId(userDTO.getLogin(), userDTO.getSenha()));
+        user.setUserId(new UserId(userDTO.getLogin(), senha));
         user.setNome(userDTO.getNome());
         user.setSexo(userDTO.getSexo());
         user.setCpf(userDTO.getCpf());
