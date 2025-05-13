@@ -1,7 +1,6 @@
 package br.com.veras.room_reservation.controller;
 
 import br.com.veras.room_reservation.dto.SalaDTO;
-import br.com.veras.room_reservation.model.Sala;
 import br.com.veras.room_reservation.service.impl.SalaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -56,10 +55,4 @@ public class SalaController {
         List<SalaDTO> list = salaServiceImpl.semReservas();
         return ResponseEntity.status(HttpStatus.FOUND).body(list);
     }
-
-
-
-
-
-
 }
