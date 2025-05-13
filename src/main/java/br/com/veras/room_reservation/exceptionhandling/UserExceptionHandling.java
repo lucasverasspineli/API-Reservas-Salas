@@ -1,5 +1,6 @@
 package br.com.veras.room_reservation.exceptionhandling;
 
+import br.com.veras.room_reservation.exception.CpfInvalidException;
 import br.com.veras.room_reservation.exception.ErrorDetail;
 import br.com.veras.room_reservation.exception.NotFoundUserException;
 import br.com.veras.room_reservation.exception.UserCredentialExistsException;
@@ -21,6 +22,12 @@ public class UserExceptionHandling extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorDetail> userCredentialExistsException(UserCredentialExistsException user){
         ErrorDetail erro = new ErrorDetail(HttpStatus.FOUND,"Esse Login ou senha já existe!");
         return ResponseEntity.status(HttpStatus.FOUND).body(erro);
+    }
+
+    @ExceptionHandler(CpfInvalidException.class)
+    public ResponseEntity<ErrorDetail> CpfException(CpfInvalidException cpf){
+        ErrorDetail erro = new ErrorDetail(HttpStatus.BAD_REQUEST,"Cpf inválido! Deve conter 11 caracteres, composto só por números" );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(erro);
     }
 
 }
