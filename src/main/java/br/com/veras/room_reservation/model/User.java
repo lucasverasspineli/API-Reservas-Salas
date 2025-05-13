@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -28,7 +29,7 @@ public class User {
     private String perfil;
     private String instituicao;
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL,orphanRemoval = true)
-    private List<Reserva> reservas;
+    private List<Reserva> reservas = new ArrayList<>();
 
     public User(){}
 

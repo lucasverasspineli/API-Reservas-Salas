@@ -21,18 +21,18 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userDTO);
     }
 
-    @PostMapping("create")
-    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO){
-        if(userDTO.getLogin() == null || userDTO.getSenha() == null){
+    @PostMapping("create/{senha}")
+    public ResponseEntity<?> create(@Valid @RequestBody UserDTO userDTO, @PathVariable String senha){
+        if(userDTO.getLogin() == null || senha == null){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Você tem que informar o Login e Senha");
         }
-        UserDTO user =userService.criar(userDTO);
+        UserDTO user =userService.criar(userDTO,senha);
         return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     @PutMapping("update/{login}/{senha}")
     public ResponseEntity<UserDTO> update(@RequestBody UserDTO userDTO,@PathVariable String login ,@PathVariable String senha){
-       UserDTO user = userService.editar(userDTO);
+       UserDTO user = userService.editar(userDTO ,senha);
        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
