@@ -15,9 +15,15 @@ public class ReservaController {
     private ReservaServiceImpl reservaServiceImpl;
 
     @PostMapping("{login}/{senha}/{id_sala}")
-    public ResponseEntity<ReservaDTO> create(@PathVariable String login, @PathVariable String senha, @PathVariable Long id_sala){
-       ReservaDTO reserva = reservaServiceImpl.criar(login,senha,id_sala);
+    public ResponseEntity<ReservaDTO> create(@PathVariable String login, @PathVariable String senha, @PathVariable Long id_sala) {
+        ReservaDTO reserva = reservaServiceImpl.criar(login, senha, id_sala);
         return ResponseEntity.status(HttpStatus.CREATED).body(reserva);
+    }
+
+    @GetMapping("{idReserva}")
+    public ResponseEntity<ReservaDTO> getReservation(@PathVariable Long idReserva) {
+        ReservaDTO reservaDTO = reservaServiceImpl.buscar(idReserva);
+        return ResponseEntity.status(HttpStatus.FOUND).body(reservaDTO);
     }
 
 }

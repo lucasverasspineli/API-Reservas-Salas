@@ -4,6 +4,7 @@ import br.com.veras.room_reservation.dto.ReservaDTO;
 import br.com.veras.room_reservation.dto.ReservaMinDTO;
 import br.com.veras.room_reservation.dto.SalaDTO;
 import br.com.veras.room_reservation.dto.UserDTO;
+import br.com.veras.room_reservation.exception.ReservationNotExist;
 import br.com.veras.room_reservation.exception.RoomReservedException;
 import br.com.veras.room_reservation.model.Reserva;
 import br.com.veras.room_reservation.model.Sala;
@@ -13,6 +14,7 @@ import br.com.veras.room_reservation.repository.ReservaRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -45,8 +47,12 @@ public class ReservaServiceImpl {
         userService.editarListReservasUser(userDTO,senha, buscarSala.getId());
         buscarSala.getReservas().add(reservaMinDTO);
         salaService.editListReservaSala(buscarSala, userDTO.getLogin(), senha);
-        reservaRepository.save(reserva);
-        return new ReservaDTO(reserva);
+        return new ReservaDTO(reservaRepository.save(reserva));
+    }
+
+    @Transactional(readOnly = true)
+    public ReservaDTO buscar(Long idReserva){
+        return new ReservaDTO(reservaRepository.findById(idReserva).orElseThrow(ReservationNotExist::new));
     }
 
 
